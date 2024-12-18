@@ -328,7 +328,7 @@ inline void CheckCudaError(const char* file, int line)
 #endif
 }
 
-#define CCE CheckCudaError(__FILE__, __LINE__)
+#define CCE CheckCudaError(__FILE__, __LINE__);
 
 inline int _ConvertSMVer2Cores(int major, int minor) {
     // Defines for GPU Architecture types (using the SM version to determine

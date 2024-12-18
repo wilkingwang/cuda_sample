@@ -4,7 +4,7 @@ enable_language(CUDA)
 
 find_package(CUDAToolkit 11.6 REQUIRED)
 
-set(LIB_DEPENDENCY CUDA::cudart CUDA::curand CUDA::cusparse Core Framework)
+set(LIB_DEPENDENCY cublas Core Framework)
 
 include_directories(${CUDA_INCLUDE_DIRS})
 add_example(GEMMNative "" LIB_DEPENDENCY)
