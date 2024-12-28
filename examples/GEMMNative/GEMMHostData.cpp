@@ -46,8 +46,8 @@ bool GEMMHostData::Init(const int dimSize, const bool bAlign)
 
 bool GEMMHostData::initDimSize(const int dimSize, const bool bAlign)
 {
-	//for (int i = 128; i <= dimSize + 127; i += 128)
-	for (int i = 3; i <= dimSize; i += 3)
+	// 仅对128大小对其的矩阵，计算结果才和cublas一致
+	for (int i = 128; i <= dimSize + 127; i += 128)
 	{
 		if (!bAlign)
 		{

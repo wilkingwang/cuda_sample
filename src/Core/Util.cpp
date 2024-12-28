@@ -12,8 +12,7 @@ void GenRandomMatrix(std::vector<float>& matrix, size_t M, size_t N)
 	{
 		for (size_t j = 0; j < N; j++)
 		{
-			//matrix[i * N + j] = (float)rand() / ((float)RAND_MAX / a);
-			matrix[i * N + j] = i * N + j + 1.0;
+			matrix[i * N + j] = (float)rand() / ((float)RAND_MAX / a);
 		}
 	}
 }

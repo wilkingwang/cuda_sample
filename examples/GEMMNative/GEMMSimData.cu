@@ -73,12 +73,12 @@ bool GEMMSimData::runSelfHandGEMM(GEMMMatrixData* matrixData)
 	sgemm(matrixData->M, matrixData->N, matrixData->K, d_matrixA, d_matrixB, d_matrixHandOnC, alpha, beta);
 	checkCudaErrors(cudaMemcpy(matrixData->handOnResult.data(), d_matrixHandOnC, MATRIXSIZE(matrixData->M, matrixData->N, float), cudaMemcpyDeviceToHost));
 
-	//timer.Start();
-	//for (size_t i = 0; i < iter; i++)
-	//{
-	//	sgemm(matrixData->M, matrixData->N, matrixData->K, d_matrixA, d_matrixB, d_matrixHandOnC, alpha, beta);
-	//}
-	//timer.End();
+	timer.Start();
+	for (size_t i = 0; i < iter; i++)
+	{
+		sgemm(matrixData->M, matrixData->N, matrixData->K, d_matrixA, d_matrixB, d_matrixHandOnC, alpha, beta);
+	}
+	timer.End();
 
 	msecPerMatrixMul[0] = timer.GetElapse() / iter;
 	gigaFlops[0] = (flopsPerMatrixMul * 1.0e-9f) / (msecPerMatrixMul[0] / 1000.0f);
@@ -97,13 +97,13 @@ bool GEMMSimData::runBlasGEMM(GEMMMatrixData* matrixData)
 		d_matrixA, (int)matrixData->M, d_matrixB, (int)matrixData->K, &beta, d_matrixBalsC, (int)matrixData->N));
 	checkCudaErrors(cudaMemcpy(matrixData->blasResult.data(), d_matrixBalsC, MATRIXSIZE(matrixData->M, matrixData->N, float), cudaMemcpyDeviceToHost));
 
-	//timer.Start();
-	//for (int i = 0; i < iter; i++)
-	//{
-	//	checkCudaErrors(cublasSgemm(blasPtr, CUBLAS_OP_N, CUBLAS_OP_N, (int)matrixData->N, (int)matrixData->M, (int)matrixData->K, &alpha,
-	//		d_matrixB, (int)matrixData->N, d_matrixA, (int)matrixData->K, &beta, d_matrixBalsC, (int)matrixData->N));
-	//}
-	//timer.End();
+	timer.Start();
+	for (int i = 0; i < iter; i++)
+	{
+		checkCudaErrors(cublasSgemm(blasPtr, CUBLAS_OP_N, CUBLAS_OP_N, (int)matrixData->N, (int)matrixData->M, (int)matrixData->K, &alpha,
+			d_matrixB, (int)matrixData->N, d_matrixA, (int)matrixData->K, &beta, d_matrixBalsC, (int)matrixData->N));
+	}
+	timer.End();
 
 	msecPerMatrixMul[1] = timer.GetElapse() / iter;
 	gigaFlops[1] = (flopsPerMatrixMul * 1.0e-9f) / (msecPerMatrixMul[1] / 1000.0f);
