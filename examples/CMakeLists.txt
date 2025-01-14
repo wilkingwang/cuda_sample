@@ -1,1 +1,3 @@
 add_subdirectory(GEMMNative)
+add_subdirectory(Reduction)
+add_subdirectory(Transpose)
